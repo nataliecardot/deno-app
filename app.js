@@ -1,8 +1,7 @@
-const fs = require('fs').promises;
+const http = require('http');
 
-const text = 'This is some text to store in a file!';
-
-// To execute: `node app.js`
-fs.writeFile('node-message.txt', text).then(() => {
-  console.log('Wrote file!');
+const server = http.createServer((req, res) => {
+  res.end('Hello world (from Node!)');
 });
+
+server.listen(3000);
