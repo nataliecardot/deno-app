@@ -1,9 +1,9 @@
-const text = 'This is some text to store in a file!';
+import { serve } from "https://deno.land/std/http/server.ts";
 
-const encoder = new TextEncoder();
-const data = encoder.encode(text);
+// Network requests blocked by default, to open up a server, which is related to network, need extra permission flag: `deno run --allow-net app.ts`
+const server = serve({ port: 3000 });
 
-// Since Deno is secure by default (when you execute a file, it cannot read to file, write to file, send HTTP requests) & requires explicit execution permissions, have to set appropriate permissions with --allow-write flag when executing TS file. Allowing to write to a file message.txt only: `deno run --allow-write=message.txt app.ts`
-Deno.writeFile('message.txt', data).then(() => {
-  console.log('Wrote to file!');
-});
+// server is an async iterable, like an array full of promises. Server creates new promises which we can await, and a new promise that resolves is generated for every incoming request
+for await (const req of server) {
+  req.respond({ body: "Hello world\n" });
+}
